@@ -6,6 +6,7 @@ local function Init()
 	Gebo = RegisterMod("Gebo API", 1)
 	Gebo.MajorVersion = majorversion
 	Gebo.MinorVersion = minorversion
+	Gebo.RepentogonEnabled = REPENTOGON ~= nil
 	Gebo.SaveData = {
 		Data = {},
 		HourglassBackup = {},
