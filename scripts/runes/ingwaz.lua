@@ -26,7 +26,7 @@ function IngwazRune:UseIngwaz(ingwaz, player, useflags)
 	local entities = Isaac.GetRoomEntities()
 	local rng = player:GetCardRNG(ingwaz)
 	AntibirthRunes.Helpers:PlayGiantBook("Ingwaz", AntibirthRunes.Enums.SoundEffect.RUNE_INGWAZ, player, rng)
-	local addInvFrames = false
+	local isInvinsible = false
 	for i = 1, #entities do
 		if entities[i]:ToPickup() then
 			local pickup = entities[i]:ToPickup()
@@ -37,43 +37,10 @@ function IngwazRune:UseIngwaz(ingwaz, player, useflags)
 			local callbacks = Isaac.GetCallbacks(AntibirthRunes.Enums.Callbacks.INGWAZ_OPEN_CHEST)
 			for _, callback in ipairs(callbacks) do
 				if callback.Param and callback.Param == pickup.Variant then
-					callback.Function(pickup, player)
-				end
-			end
-			if RepentancePlusMod then
-				if pickup.Variant == RepentancePlusMod.CustomPickups.FLESH_CHEST then
-					RepentancePlusMod.openFleshChest(pickup)
-				elseif pickup.Variant == RepentancePlusMod.CustomPickups.SCARLET_CHEST then
-					RepentancePlusMod.openScarletChest(pickup)
-				elseif pickup.Variant == RepentancePlusMod.CustomPickups.BLACK_CHEST then
-					RepentancePlusMod.openBlackChest(pickup)
-				end
-			end
-			if RareChests then
-				if pickup.Variant == CARDBOARD_CHEST then
-					RareChests.openCardboardChest(pickup, player)
-				elseif pickup.Variant == FILE_CABINET then
-					RareChests.openFileCabinet(pickup, player)
-				elseif pickup.Variant == SLOT_CHEST then
-					RareChests.openCursedChest(pickup, player)
-				elseif pickup.Variant == TOMB_CHEST then
-					RareChests.openTombChest(pickup)
-				elseif pickup.Variant == DEVIL_CHEST then
-					RareChests.openDevilChest(pickup, player)
-				elseif pickup.Variant == CURSED_CHEST then
-					if not addInvFrames then
-						addInvFrames = true
-						if REPENTOGON then
-							player:AddCollectibleEffect(CollectibleType.COLLECTIBLE_BOOK_OF_SHADOWS, false, 1, true)
-						else
-							player:SetMinDamageCooldown(5)
-						end
+					local ret = callback.Function(pickup, player, isInvinsible)
+					if type(ret) == "boolean" and ret == true then
+						isInvinsible = ret
 					end
-					RareChests.openCursedChest(pickup, player)
-				elseif pickup.Variant == BLOOD_CHEST then
-					RareChests.openBloodChest(pickup)
-				elseif pickup.Variant == PENITENT_CHEST then
-					RareChests.openPenitentChest(pickup)
 				end
 			end
 		end

@@ -18,7 +18,9 @@ function AntibirthRunes:AddModCompat(mod, funct)
     }
 end
 
-include("scripts.mod_compat.eid.eid")
+include("scripts.mod_compat.eid.main")
+include("scripts.mod_compat.repentanceplus.main")
+include("scripts.mod_compat.rare_chests.main")
 
 local hasRunCompatibility = false
 local loadCallback = --REPENTOGON and ModCallbacks.MC_POST_MODS_LOADED or 

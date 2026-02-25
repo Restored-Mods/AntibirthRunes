@@ -14,7 +14,6 @@ include("scripts.runes.othala")
 include("scripts.runes.sowilo")
 include("scripts.mod_compat.main")
 
-
 local function RefreshSaveData()
 	if mod:HasData() then
 		mod.SavedData = json.decode(mod:LoadData())
@@ -43,32 +42,31 @@ end
 
 RefreshSaveData()
 
-if ModConfigMenu and not REPENTOGON then
-	local RunesMCM = "Antibirth Runes"
-	ModConfigMenu.UpdateCategory(RunesMCM, {
-		Info = { "Configuration for API mod." },
-	})
-
-	ModConfigMenu.AddSetting(RunesMCM, {
-		Type = ModConfigMenu.OptionType.NUMBER,
-		CurrentSetting = function()
-			return mod.SavedData.BookAPI
-		end,
-		Default = 1,
-		Minimum = 1,
-		Maximum = 3,
-		Display = function()
-			return "Preffered API to use: " .. AntibirthRunes.Enums.UseAPI[mod.SavedData.BookAPI]
-		end,
-		OnChange = function(currentNum)
-			mod.SavedData.BookAPI = AntibirthRunes.Helpers:CheckAvailableAPI(currentNum, mod.SavedData.BookAPI)
-			mod:SaveData(json.encode(mod.SavedData))
-		end,
-		Info = "Preffered API for animations.",
-	})
-end
-
 if not REPENTOGON then
+	if ModConfigMenu then
+		local RunesMCM = "Antibirth Runes"
+		ModConfigMenu.UpdateCategory(RunesMCM, {
+			Info = { "Configuration for API mod." },
+		})
+
+		ModConfigMenu.AddSetting(RunesMCM, {
+			Type = ModConfigMenu.OptionType.NUMBER,
+			CurrentSetting = function()
+				return mod.SavedData.BookAPI
+			end,
+			Default = 1,
+			Minimum = 1,
+			Maximum = 3,
+			Display = function()
+				return "Preffered API to use: " .. AntibirthRunes.Enums.UseAPI[mod.SavedData.BookAPI]
+			end,
+			OnChange = function(currentNum)
+				mod.SavedData.BookAPI = AntibirthRunes.Helpers:CheckAvailableAPI(currentNum, mod.SavedData.BookAPI)
+				mod:SaveData(json.encode(mod.SavedData))
+			end,
+			Info = "Preffered API for animations.",
+		})
+	end
 	function Runes:SaveData(isSaving)
 		if isSaving then
 			mod.SavedData.GeboData = Gebo.GetSaveData()

@@ -1,0 +1,5 @@
+AntibirthRunes:AddModCompat("RepentancePlusMod", function()
+    AntibirthRunes:AddCallback(AntibirthRunes.Enums.Callbacks.INGWAZ_OPEN_CHEST, RepentancePlusMod.openFleshChest, RepentancePlusMod.CustomPickups.FLESH_CHEST)
+    AntibirthRunes:AddCallback(AntibirthRunes.Enums.Callbacks.INGWAZ_OPEN_CHEST, RepentancePlusMod.openScarletChest, RepentancePlusMod.CustomPickups.SCARLET_CHEST)
+    AntibirthRunes:AddCallback(AntibirthRunes.Enums.Callbacks.INGWAZ_OPEN_CHEST, RepentancePlusMod.openBlackChest, RepentancePlusMod.CustomPickups.BLACK_CHEST)
+end)
