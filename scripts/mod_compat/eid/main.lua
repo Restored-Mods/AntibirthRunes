@@ -31,16 +31,22 @@ AntibirthRunes:AddModCompat("EID", function()
 		[AntibirthRunes.Enums.Runes.GEBO] = {
 			en_us = {
 				name = "Gebo",
-				description = "Interacts with any machine or beggar in the room. Plays beggars 6 times, plays blood machines 4 times, plays other machines 5 times. Machines and beggars have an increased chance to pay out or explode, even paying out at only one play",
+				description = "Interacts with any machine or beggar in the room."
+					.. "#Plays beggars 6 times, plays blood machines 4 times, plays other machines 5 times."
+					.. "#Machines and beggars have an increased chance to pay out or explode, even paying out at only one play.",
                 modifier_description = "Creates random copy of slot or beggar in room",
 			},
 			spa = {
 				name = "Gebo",
-				description = "Interactúa con cualquier máquina o mendigo en la habitación. Usa mendigos 6 veces, usa donadores de sangre 4 veces, usa otras máquinas 5 veces. Las máquinas y los mendigos tienen una mayor probabilidad de pagar o explotar, incluso pagando en una sola jugada",
+				description = "Interactúa con cualquier máquina o mendigo en la habitación."
+					.. "#Usa mendigos 6 veces, usa donadores de sangre 4 veces, usa otras máquinas 5 veces."
+					.. "#Las máquinas y los mendigos tienen una mayor probabilidad de pagar o explotar, incluso pagando en una sola jugada.",
 			},
 			ru = {
 				name = "Гебо",
-				description = "Взаимодействует с любыми машиной или попрошайкой в ​​комнате. Попрошайки - 6 раз, донорские машины - 4 раза, остальные - 5 раз. Машины и попрошайки имеют повышенный шанс на награды или взорваться, даже если заплатят только за одну игру",
+				description = "Взаимодействует с любыми машиной или попрошайкой в ​​комнате."
+					.. "#Попрошайки - 6 раз, донорские машины - 4 раза, остальные - 5 раз."
+					.. "#Машины и попрошайки имеют повышенный шанс на награды или взорваться, даже если заплатят только за одну игру.",
                 modifier_description = "Создает случайную копию машины или попрошайки в комнате",
 			},
 		},
