@@ -29,7 +29,7 @@ function GeboRune:UseGebo(gebo, player, useflags)
 			end
 		end
 	end
-	if AntibirthRunes.Helpers:HasMagicChalk(player) and rng:RandomInt(2) == 0 and #slots > 0 then
+	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) and rng:RandomInt(2) == 0 and #slots > 0 then
 		local slot = slots[rng:RandomInt(#slots) + 1]
 		if Gebo.IsGeboSlot(slot) then
 			local rng = slot:GetDropRNG()

@@ -15,7 +15,7 @@ function OthalaRune:UseOthala(othala, player, useflags)
 			return
 		end
 		local index, item, collectConfig
-		local itemsToGet = AntibirthRunes.Helpers:HasMagicChalk(player) and 2 or 1
+		local itemsToGet = AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) and 2 or 1
 		for _ = 1, itemsToGet do
 			repeat
 				index = rng:RandomInt(1, #itemsTable)
@@ -60,7 +60,7 @@ function OthalaRune:UseOthala(othala, player, useflags)
 				player:QueueItem(Isaac.GetItemConfig():GetCollectible(playersItems[randomItem]))
 				SFXManager():Play(SoundEffect.SOUND_POWERUP1, 1, 0)
 			end
-			if AntibirthRunes.Helpers:HasMagicChalk(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				if #playersItems > 0 then
 					local randomItem = player:GetCardRNG(othala):RandomInt(#playersItems) + 1
 					player:AnimateCollectible(playersItems[randomItem], "UseItem", "PlayerPickup")

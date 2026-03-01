@@ -18,7 +18,7 @@ function FehuRune:UseFehu(fehu, player, useflags)
 			table.insert(entities, e)
 		end
 	end
-	local div = AntibirthRunes.Helpers:HasMagicChalk(player) and 1 or 2
+	local div = AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) and 1 or 2
 	entities = AntibirthRunes.Helpers:Shuffle(entities, rng)
 	for i = 1, math.ceil(#entities / div) do
 		entities[i]:AddMidasFreeze(EntityRef(player), 300 / div)

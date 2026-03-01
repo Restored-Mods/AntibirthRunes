@@ -56,7 +56,19 @@ end
 ---@return boolean, CollectibleType | integer?
 function Helpers:HasMagicChalk(player)
 	local magicchalk = Isaac.GetItemIdByName("Magic Chalk")
-	return magicchalk > 0 and player:HasCollectible(magicchalk), magicchalk
+	return magicchalk > 0 and player:HasCollectible(magicchalk)
+end
+
+---@param player EntityPlayer
+---@return boolean
+function Helpers:HasRunicTablet(player)
+	return  RunicTablet and player:HasCollectible(RunicTablet.Collectible.RunicTablet.ID)
+end
+
+---@param player EntityPlayer
+---@return boolean
+function Helpers:HasMagicChalkOrRunicTablet(player)
+	return Helpers:HasMagicChalk(player) or Helpers:HasRunicTablet(player)
 end
 
 ---@param gfx string

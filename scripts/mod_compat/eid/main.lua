@@ -9,6 +9,28 @@ AntibirthRunes:AddModCompat("EID", function()
 			and EID.holdTabPlayer ~= nil
 	end
 
+	local ItemModifiersDescriptions = {}
+
+	local function AddModiferItem(id, name, language)
+		language = language or "en_us"
+		ItemModifiersDescriptions[id] = ItemModifiersDescriptions[id] or {}
+		ItemModifiersDescriptions[id][language] = "#{{Collectible"..id.."}} {{ColorLavender}}"..name.."#"
+	end
+
+	if RunicTablet then
+		AddModiferItem(RunicTablet.Collectible.RunicTablet.ID, "Runic Tablet")
+		AddModiferItem(RunicTablet.Collectible.RunicTablet.ID, "Руническая плитка", "ru")
+		--AddModiferItem(RunicTablet.Collectible.RunicTablet.ID, "Runic Tablet", "spa")
+	end
+	local magicChalkId = Isaac.GetItemIdByName("Magic Chalk")
+
+	if magicChalkId > 0 then
+		AddModiferItem(magicChalkId, "Magic Chalk")
+		AddModiferItem(magicChalkId, "Волшебный мел", "ru")
+		--AddModiferItem(magicChalkId, "Runic Tablet", "spa")
+	end
+
+
 	local Descriptions = {
 		[AntibirthRunes.Enums.Runes.FEHU] = {
 			en_us = {
@@ -24,7 +46,9 @@ AntibirthRunes:AddModCompat("EID", function()
 				description = "Применяет эффект Прикосновения Мидаса к половине монстров в комнате на 5 секунд",
 			},
 			modifier = function(descObj, player, lang)
-				descObj.Description = descObj.Description:gsub("5", "10")
+				descObj.Description = descObj.Description:gsub("5", "{{ColorShinyPurple}}10{{CR}}")
+				descObj.Description = descObj.Description:gsub("half", "all")
+				descObj.Description = descObj.Description:gsub("к половине монстров", "ко всем монстрам")
 				return descObj
 			end,
 		},
@@ -63,7 +87,7 @@ AntibirthRunes:AddModCompat("EID", function()
 			ru = {
 				name = "Игваз",
 				description = "Открывает все сундуки в комнате",
-                modifier_description = "Activated {{Collectible351}} Mega Bean effect",
+                modifier_description = "Актиирует эффект {{Collectible175}} Папиного ключа",
 			},
 		},
 		[AntibirthRunes.Enums.Runes.KENAZ] = {
@@ -97,9 +121,9 @@ AntibirthRunes:AddModCompat("EID", function()
 			},
             modifier = function(descObj, player, lang)
                 if lang == "ru" then
-                    descObj.Description = descObj.Description:gsub("1 случайную копию предмета, который", "2 случайные копии предметов, которые")
+                    descObj.Description = descObj.Description:gsub("1 случайную копию предмета, который", "{{ColorShinyPurple}}2{{CR}} случайные копии предметов, которые")
                 elseif lang == "en_us" then
-                    descObj.Description = descObj.Description:gsub("1 copy of item", "2 copies of items")
+                    descObj.Description = descObj.Description:gsub("1 copy of item", "{{ColorShinyPurple}}2{{CR}} copies of items")
                 end
 				return descObj
 			end,
@@ -159,8 +183,8 @@ AntibirthRunes:AddModCompat("EID", function()
 			elseif descObj and descObj.Entity then
 				player = Game():GetNearestPlayer(descObj.Entity.Position)
 			end
-            local hasMagicChalk, magicChalkId = AntibirthRunes.Helpers:HasMagicChalk(player)
-			if player ~= nil and hasMagicChalk then
+            local hasMagicChalk, hasRunicTablet = AntibirthRunes.Helpers:HasMagicChalk(player), AntibirthRunes.Helpers:HasRunicTablet(player)
+			if player ~= nil and hasMagicChalk or hasRunicTablet then
                 local language
                 if replace_description[lang] then
                     language = lang
@@ -175,7 +199,13 @@ AntibirthRunes:AddModCompat("EID", function()
                 end
                 local extra_descrition_lang = extra_description[lang] or extra_description["en_us"]
                 if extra_descrition_lang ~= nil then
-                    descObj.Description = descObj.Description.."#{{Collectible"..magicChalkId.."}} "..extra_descrition_lang
+					local appendCollectible
+					if hasRunicTablet then
+						appendCollectible = ItemModifiersDescriptions[RunicTablet.Collectible.RunicTablet.ID][lang] or ItemModifiersDescriptions[RunicTablet.Collectible.RunicTablet.ID]["en_us"] or "#{{Collectible"..RunicTablet.Collectible.RunicTablet.ID.."}} "
+					else
+						appendCollectible = ItemModifiersDescriptions[magicChalkId][lang] or ItemModifiersDescriptions[magicChalkId]["en_us"] or "#{{Collectible"..magicChalkId.."}} "
+					end
+                    descObj.Description = descObj.Description..appendCollectible..extra_descrition_lang
                 end
 			end
 			return descObj

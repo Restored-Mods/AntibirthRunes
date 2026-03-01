@@ -47,7 +47,7 @@ function IngwazRune:UseIngwaz(ingwaz, player, useflags)
 		end
 	end
 	player:RemoveCollectible(CollectibleType.COLLECTIBLE_MOMS_KEY, true)
-	if AntibirthRunes.Helpers:HasMagicChalk(player) then
+	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
 	end
 end

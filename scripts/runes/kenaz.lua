@@ -9,7 +9,7 @@ function KenazRune:UseKenaz(kenaz, player, useflags)
 	player:AddCollectible(CollectibleType.COLLECTIBLE_TOXIC_SHOCK, 0, false, 0, 0)
 	player:RemoveCollectible(CollectibleType.COLLECTIBLE_TOXIC_SHOCK, true, 0, true)
 	player:AddBlackHearts(1)
-	if AntibirthRunes.Helpers:HasMagicChalk(player) then
+	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_MEGA_BEAN, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
 	end
 end

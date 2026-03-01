@@ -7,7 +7,7 @@ function SowiloRune:UseSowilo(sowilo, player, useflags)
 	local rng = player:GetCardRNG(sowilo)
 	AntibirthRunes.Helpers:PlayGiantBook("Sowilo", AntibirthRunes.Enums.SoundEffect.RUNE_SOWILO, player, rng)
 
-	if AntibirthRunes.Helpers:HasMagicChalk(player) then
+	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_FORGET_ME_NOW, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
 	else
 		player:UseActiveItem(CollectibleType.COLLECTIBLE_D7, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
