@@ -103,8 +103,43 @@ end, function()
 	)
 	if RunicTablet then
 		for _, rune in pairs(AntibirthRunes.Enums.Runes) do
+			-- Disable double activation
 			RunicTablet.Collectible.RunicTablet.CUSTOM_EFFECTS[rune] = true
+			-- Register our own hud sprite
+			RunicTablet.Collectible.RunicTablet.HUDSprites[rune] = Sprite("gfx/Rune3.anm2", true)
+			if rune > Card.NUM_CARDS then
+				RunicTablet.Collectible.RunicTablet.HUDSprites[rune].Offset = Vector(3, 0)
+			end
 		end
+		local minAntiRuneId, maxAntiRuneId
+		for _, id in pairs(AntibirthRunes.Enums.Runes) do
+			minAntiRuneId = minAntiRuneId == nil and id or math.min(minAntiRuneId, id)
+			maxAntiRuneId = maxAntiRuneId == nil and id or math.max(maxAntiRuneId, id)
+		end
+		local t = RunicTablet.Collectible.RunicTablet
+		-- Re-register with our runes take into accout
+		HudHelper.RegisterHUDElement({
+			Name = "RR_RUNICTABLET",
+			Priority = HudHelper.Priority.HIGH,
+			Condition = function(player)
+				if not player:HasCollectible(t.ID) then
+					return false
+				end
+				local config = RunicTablet.Util:GetCardConfig(player:GetCard(0))
+				return config and config.ID > 0 and config:IsRune()
+			end,
+			OnRender = function(player, _, layout, position, alpha, scale)
+				local id = player:GetCard(0)
+				local sprite = t:GetHUDSprite(id)
+				local sin = (1 + math.sin(RunicTablet.Enum.Obj.Game:GetFrameCount() * 0.2)) / 2
+
+				sprite:Play("HUD", true)
+				sprite.Offset = (id >= minAntiRuneId and id <= maxAntiRuneId) and Vector.Zero
+					or ((id > Card.NUM_CARDS) and t.HUD_OFFSET_MODDED or t.HUD_OFFSET)
+				sprite.Color = Color(1, 1, 1, 1, sin * 0.17, sin * 0.07, sin * 0.27)
+				sprite:Render(position)
+			end,
+		}, HudHelper.HUDType.POCKET)
 	end
 end)
 
@@ -135,8 +170,8 @@ end, function()
 						"{{ColorShinyPurple}}2{{CR}} случайные копии предметов, которые"
 					)
 				elseif lang == "en_us" then
-					descObj.Description =
-						descObj.Description:gsub("1 copy of item", "{{ColorShinyPurple}}2{{CR}} copies of items")
+					descObj.Description = descObj.Description:gsub("copy of item", "copies of items")
+					descObj.Description = descObj.Description:gsub("1", "{{ColorShinyPurple}}2{{CR}}")
 				end
 				return descObj
 			end,
@@ -214,12 +249,10 @@ end, function()
 				if descriptions.appends and descriptions.appends[rune] then
 					local append = descriptions.appends[rune][language] or descriptions.appends[rune]["en_us"]
 					if append ~= nil then
-						local id = AntibirthRunes.Helpers:HasRunicTablet(player) and RunicTablet.Collectible.RunicTablet.ID or magicChalkID
-						descObj.Description = descObj.Description
-							.. "#{{Collectible"
-							.. id
-							.. "}} "
-							.. append
+						local id = AntibirthRunes.Helpers:HasRunicTablet(player)
+								and RunicTablet.Collectible.RunicTablet.ID
+							or magicChalkID
+						descObj.Description = descObj.Description .. "#{{Collectible" .. id .. "}} " .. append
 					end
 				end
 			end
