@@ -196,7 +196,7 @@ end, function()
 		replaces = {
 			[AntibirthRunes.Enums.Runes.SOWILO] = {
 				en_us = "Rerolls and restarts the entire floor",
-				--spa = "",
+				spa = "Reinicia y cambia el piso actual#Se consume tras usarlo",
 				ru = "Текущий уровень перезапускается и генерируется заново",
 			},
 		},
