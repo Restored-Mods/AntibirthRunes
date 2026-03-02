@@ -55,7 +55,7 @@ Constants.  Descriptions = {
 		},
 		spa = {
 			name = "Kenaz",
-			description = "Envenena a todos los enemigos en la sala",
+			description = "Envenena a todos los enemigos en la sala#{{HalfBlackHeart}} +1 Corazón negro",
 		},
 		ru = {
 			name = "Кеназ",

@@ -169,6 +169,10 @@ end, function()
 						"1 случайную копию предмета, который",
 						"{{ColorShinyPurple}}2{{CR}} случайные копии предметов, которые"
 					)
+				elseif lang == "spa" then
+					descObj.Description = descObj.Description:gsub("copia de un objeto", "copias de objetos")
+					descObj.Description = descObj.Description:gsub("una", "{{ColorShinyPurple}}dos{{CR}}")
+					descObj.Description = descObj.Description:gsub("existente", "existentes")
 				elseif lang == "en_us" then
 					descObj.Description = descObj.Description:gsub("copy of item", "copies of items")
 					descObj.Description = descObj.Description:gsub("1", "{{ColorShinyPurple}}2{{CR}}")
@@ -179,17 +183,17 @@ end, function()
 		appends = {
 			[AntibirthRunes.Enums.Runes.GEBO] = {
 				en_us = "Creates random copy of slot or beggar in room",
-				--spa = "",
+				spa = "Crea una copia aleatoria de una máquina o mendigo",
 				ru = "Создает случайную копию машины или попрошайки в комнате",
 			},
 			[AntibirthRunes.Enums.Runes.INGWAZ] = {
 				en_us = "Activates {{Collectible175}} Dad's Key effect",
-				--spa = "",
+				spa = "Activa el efecto de {{Collectible175}} La Llave de Papá",
 				ru = "Актиирует эффект {{Collectible175}} Папиного ключа",
 			},
 			[AntibirthRunes.Enums.Runes.KENAZ] = {
 				en_us = "Activates {{Collectible351}} Mega Bean effect",
-				--spa = "",
+				spa = "Activa el efecto del {{Collectible351}} Mega Frijol",
 				ru = "Активирует эффект {{Collectible351}} Мега боба",
 			},
 		},
