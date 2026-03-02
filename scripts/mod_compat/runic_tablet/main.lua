@@ -1,9 +1,15 @@
-AntibirthRunes:AddModCompat("RunicTablet", function()
+local function MagicChalkOrRuneTablet()
+	return RunicTablet or Isaac.GetItemIdByName("Magic Chalk") > 0
+end
+
+AntibirthRunes:AddModCompat(function()
+	return MagicChalkOrRuneTablet()
+end, function()
 	AntibirthRunes:AddInternalPriorityCallback(
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_EXTRA,
 		-1,
 		function(_, fehu, player, useflags, rng, time, div)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				AntibirthRunes.Runes.FEHU:UseFehu(fehu, player, useflags, rng, time, div)
 				return true
 			end
@@ -16,7 +22,7 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_EXTRA,
 		-1,
 		function(_, gebo, player, useflags, rng)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				local slots = AntibirthRunes.Runes.GEBO.GetSlots()
 				if rng:RandomInt(2) == 0 and #slots > 0 then
 					local slot = slots[rng:RandomInt(#slots) + 1]
@@ -48,7 +54,7 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_EXTRA,
 		-1,
 		function(_, sowilo, player, useflags, rng)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				player:UseActiveItem(
 					CollectibleType.COLLECTIBLE_MEGA_BEAN,
 					UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER
@@ -62,7 +68,7 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_MAIN,
 		-1,
 		function(_, othala, player, useflags, rng, extra)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				AntibirthRunes.Runes.OTHALA:UseOthala(othala, player, useflags, rng, extra)
 				return true
 			end
@@ -74,7 +80,7 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_EXTRA,
 		-1,
 		function(_, sowilo, player, useflags, rng)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
 				return true
 			end
@@ -85,7 +91,7 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		AntibirthRunes.Enums.Callbacks.RUN_RUNE_MAIN,
 		-1,
 		function(_, sowilo, player, useflags, rng)
-			if AntibirthRunes.Helpers:HasRunicTablet(player) then
+			if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				player:UseActiveItem(
 					CollectibleType.COLLECTIBLE_FORGET_ME_NOW,
 					UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER
@@ -95,14 +101,17 @@ AntibirthRunes:AddModCompat("RunicTablet", function()
 		end,
 		AntibirthRunes.Enums.Runes.SOWILO
 	)
-    for _, rune in pairs(AntibirthRunes.Enums.Runes) do
-		RunicTablet.Collectible.RunicTablet.CUSTOM_EFFECTS[rune] = true
+	if RunicTablet then
+		for _, rune in pairs(AntibirthRunes.Enums.Runes) do
+			RunicTablet.Collectible.RunicTablet.CUSTOM_EFFECTS[rune] = true
+		end
 	end
 end)
 
 AntibirthRunes:AddModCompat(function()
-	return EID and RunicTablet
+	return EID and MagicChalkOrRuneTablet()
 end, function()
+	local magicChalkID = Isaac.GetItemIdByName("Magic Chalk")
 	local function HodlingTab()
 		return EID.Config["ItemReminderEnabled"]
 			and EID.holdTabCounter >= 30
@@ -159,13 +168,19 @@ end, function()
 	}
 
 	for rune, desc in pairs(AntibirthRunes.Constants.Descriptions) do
-        for i = #RunicTablet.Compat.EID.MODIFIERS, 1, -1 do
-            if RunicTablet.Compat.EID.MODIFIERS[i][1] == "RR_RUNICTABLET_APPEND_"..rune then
-                table.remove(RunicTablet.Compat.EID.MODIFIERS, i)
-            end
-        end
-        local runic_modifier_name = "KK_" .. string.gsub(string.upper(RunicTablet.Name), " ", "") .. "_" .. "RR_RUNICTABLET_APPEND_" .. rune
-        EID:removeDescriptionModifier(runic_modifier_name)
+		if RunicTablet then
+			for i = #RunicTablet.Compat.EID.MODIFIERS, 1, -1 do
+				if RunicTablet.Compat.EID.MODIFIERS[i][1] == "RR_RUNICTABLET_APPEND_" .. rune then
+					table.remove(RunicTablet.Compat.EID.MODIFIERS, i)
+				end
+			end
+			local runic_modifier_name = "KK_"
+				.. string.gsub(string.upper(RunicTablet.Name), " ", "")
+				.. "_"
+				.. "RR_RUNICTABLET_APPEND_"
+				.. rune
+			EID:removeDescriptionModifier(runic_modifier_name)
+		end
 		EID:addDescriptionModifier("RunicTabletCompatRune_" .. rune, function(descObj)
 			return descObj
 				and descObj.ObjType == EntityType.ENTITY_PICKUP
@@ -179,15 +194,15 @@ end, function()
 			elseif descObj and descObj.Entity then
 				player = Game():GetNearestPlayer(descObj.Entity.Position)
 			end
-			if player and player:HasCollectible(RunicTablet.Collectible.RunicTablet.ID) then
+			if player and AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
 				if descriptions.replaces and descriptions.replaces[rune] then
 					local original
-                    if desc[language] and desc[language].description then
-                        original = desc[language].description
-                    end 
-                    if original == nil and desc["en_us"] and desc["en_us"].description then
-                        original = desc["en_us"].description
-                    end
+					if desc[language] and desc[language].description then
+						original = desc[language].description
+					end
+					if original == nil and desc["en_us"] and desc["en_us"].description then
+						original = desc["en_us"].description
+					end
 					local replace = descriptions.replaces[rune][language] or descriptions.replaces[rune]["en_us"]
 					if original ~= nil and replace ~= nil then
 						descObj.Description = descObj.Description:gsub(original, replace)
@@ -199,7 +214,12 @@ end, function()
 				if descriptions.appends and descriptions.appends[rune] then
 					local append = descriptions.appends[rune][language] or descriptions.appends[rune]["en_us"]
 					if append ~= nil then
-						descObj.Description = descObj.Description .. "#{{Collectible" .. RunicTablet.Collectible.RunicTablet.ID .. "}} " .. append
+						local id = AntibirthRunes.Helpers:HasRunicTablet(player) and RunicTablet.Collectible.RunicTablet.ID or magicChalkID
+						descObj.Description = descObj.Description
+							.. "#{{Collectible"
+							.. id
+							.. "}} "
+							.. append
 					end
 				end
 			end
