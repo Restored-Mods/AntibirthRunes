@@ -22,10 +22,8 @@ end
 ---@param ingwaz Card | integer
 ---@param player EntityPlayer
 ---@param useflags UseFlag | integer
-function IngwazRune:UseIngwaz(ingwaz, player, useflags)
+function IngwazRune:UseIngwaz(ingwaz, player, useflags, rng)
 	local entities = Isaac.GetRoomEntities()
-	local rng = player:GetCardRNG(ingwaz)
-	AntibirthRunes.Helpers:PlayGiantBook("Ingwaz", AntibirthRunes.Enums.SoundEffect.RUNE_INGWAZ, player, rng)
 	local isInvinsible = false
 	player:AddCollectible(CollectibleType.COLLECTIBLE_MOMS_KEY, 0, false)
 	for i = 1, #entities do
@@ -47,8 +45,12 @@ function IngwazRune:UseIngwaz(ingwaz, player, useflags)
 		end
 	end
 	player:RemoveCollectible(CollectibleType.COLLECTIBLE_MOMS_KEY, true)
-	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) then
-		player:UseActiveItem(CollectibleType.COLLECTIBLE_DADS_KEY, UseFlag.USE_NOANIM | UseFlag.USE_NOANNOUNCER)
-	end
+	return true
 end
-AntibirthRunes:AddCallback(ModCallbacks.MC_USE_CARD, IngwazRune.UseIngwaz, AntibirthRunes.Enums.Runes.INGWAZ)
+AntibirthRunes:AddInternalCallback(
+	AntibirthRunes.Enums.Callbacks.RUN_RUNE_MAIN,
+	IngwazRune.UseIngwaz,
+	AntibirthRunes.Enums.Runes.INGWAZ
+)
+
+return IngwazRune

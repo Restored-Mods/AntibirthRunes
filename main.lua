@@ -4,14 +4,10 @@ local json = require("json")
 local Runes = {}
 
 include("scripts.enums")
+include("scripts.constants")
 include("scripts.helpers")
 include("libs.gebo.main")
-include("scripts.runes.fehu")
-include("scripts.runes.gebo")
-include("scripts.runes.ingwaz")
-include("scripts.runes.kenaz")
-include("scripts.runes.othala")
-include("scripts.runes.sowilo")
+include("scripts.load_runes")
 include("scripts.mod_compat.main")
 
 local function RefreshSaveData()

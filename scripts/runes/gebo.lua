@@ -1,17 +1,20 @@
 local GeboRune = {}
 
----@param gebo Card | integer
----@param player EntityPlayer
----@param useflags UseFlag | integer
-function GeboRune:UseGebo(gebo, player, useflags)
-	local rng = player:GetCardRNG(gebo)
-	AntibirthRunes.Helpers:PlayGiantBook("Gebo", AntibirthRunes.Enums.SoundEffect.RUNE_GEBO, player, rng)
+function GeboRune.GetSlots()
 	local slots = {}
 	for _, slot in ripairs(Isaac.GetRoomEntities()) do
 		if Gebo.IsGeboSlot(slot) then
 			table.insert(slots, slot)
 		end
 	end
+	return slots
+end
+
+---@param gebo Card | integer
+---@param player EntityPlayer
+---@param useflags UseFlag | integer
+function GeboRune:UseGebo(gebo, player, useflags, rng)
+	local slots = GeboRune.GetSlots()
 	for _, slot in ipairs(slots) do
 		if slot:GetSprite():GetAnimation() ~= "Broken" and slot:GetSprite():GetAnimation() ~= "Death" then
 			if Gebo.GetGeboSlot(slot).REPENTOGON then
@@ -29,25 +32,12 @@ function GeboRune:UseGebo(gebo, player, useflags)
 			end
 		end
 	end
-	if AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) and rng:RandomInt(2) == 0 and #slots > 0 then
-		local slot = slots[rng:RandomInt(#slots) + 1]
-		if Gebo.IsGeboSlot(slot) then
-			local rng = slot:GetDropRNG()
-			local newslot = Isaac.Spawn(
-				slot.Type,
-				slot.Variant,
-				slot.SubType,
-				Game():GetRoom():FindFreeTilePosition(slot.Position, 9999),
-				Vector.Zero,
-				nil
-			)
-			if Gebo.GetGeboSlot(slot).REPENTOGON then
-				Gebo.GetData(newslot).GeboUses = Gebo.GetGeboSlot(slot).Plays
-			else
-				Gebo.GetData(newslot).Gebo = { Uses = Gebo.GetGeboSlot(slot).Plays, rng = rng, Player = player }
-			end
-			SFXManager():Play(SoundEffect.SOUND_SLOTSPAWN, 1, 0, false)
-		end
-	end
+	return true
 end
-AntibirthRunes:AddCallback(ModCallbacks.MC_USE_CARD, GeboRune.UseGebo, AntibirthRunes.Enums.Runes.GEBO)
+AntibirthRunes:AddInternalCallback(
+	AntibirthRunes.Enums.Callbacks.RUN_RUNE_MAIN,
+	GeboRune.UseGebo,
+	AntibirthRunes.Enums.Runes.GEBO
+)
+
+return GeboRune

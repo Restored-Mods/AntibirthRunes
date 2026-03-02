@@ -9,6 +9,15 @@ Enums.Runes = {
 	INGWAZ = Isaac.GetCardIdByName("Ingwaz"),
 }
 
+Enums.RuneNames = {
+	[Enums.Runes.GEBO] = "Gebo",
+	[Enums.Runes.KENAZ] = "Kenaz",
+	[Enums.Runes.FEHU] = "Fehu",
+	[Enums.Runes.OTHALA] = "Othala",
+	[Enums.Runes.SOWILO] = "Sowilo",
+	[Enums.Runes.INGWAZ] = "Ingwaz",
+}
+
 Enums.SoundEffect = {
 	RUNE_GEBO = Isaac.GetSoundIdByName("Gebo"),
 	RUNE_KENAZ = Isaac.GetSoundIdByName("Kenaz"),
@@ -19,7 +28,9 @@ Enums.SoundEffect = {
 }
 
 Enums.Callbacks = {
-    INGWAZ_OPEN_CHEST = "INGWAZ_OPEN_CHEST"
+    INGWAZ_OPEN_CHEST = "INGWAZ_OPEN_CHEST",
+	RUN_RUNE_MAIN = "RUN_RUNE_MAIN",
+	RUN_RUNE_EXTRA = "RUN_RUNE_EXTRA",
 }
 
 Enums.UseAPI = {

@@ -3,9 +3,7 @@ local FehuRune = {}
 ---@param fehu Card | integer
 ---@param player EntityPlayer
 ---@param useflags UseFlag | integer
-function FehuRune:UseFehu(fehu, player, useflags)
-	local rng = player:GetCardRNG(fehu)
-	AntibirthRunes.Helpers:PlayGiantBook("Fehu", AntibirthRunes.Enums.SoundEffect.RUNE_FEHU, player, rng)
+function FehuRune:UseFehu(fehu, player, useflags, rng, time, div)
 	local entities = {}
 	for _, e in pairs(Isaac.GetRoomEntities()) do
 		if
@@ -18,11 +16,21 @@ function FehuRune:UseFehu(fehu, player, useflags)
 			table.insert(entities, e)
 		end
 	end
-	local div = AntibirthRunes.Helpers:HasMagicChalkOrRunicTablet(player) and 1 or 2
 	entities = AntibirthRunes.Helpers:Shuffle(entities, rng)
 	for i = 1, math.ceil(#entities / div) do
-		entities[i]:AddMidasFreeze(EntityRef(player), 300 / div)
+		entities[i]:AddMidasFreeze(EntityRef(player), time)
 	end
-	Game():GetRoom():TurnGold()
+	return true
 end
-AntibirthRunes:AddCallback(ModCallbacks.MC_USE_CARD, FehuRune.UseFehu, AntibirthRunes.Enums.Runes.FEHU)
+AntibirthRunes:AddInternalCallback(AntibirthRunes.Enums.Callbacks.RUN_RUNE_MAIN, function()
+	Game():GetRoom():TurnGold()
+	return true
+end, AntibirthRunes.Enums.Runes.FEHU)
+
+AntibirthRunes:AddInternalCallback(
+	AntibirthRunes.Enums.Callbacks.RUN_RUNE_EXTRA,
+	FehuRune.UseFehu,
+	AntibirthRunes.Enums.Runes.FEHU, 150, 2
+)
+
+return FehuRune
