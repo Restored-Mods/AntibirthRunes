@@ -7,8 +7,8 @@
 
 [h1]𝐀𝐧𝐭𝐢𝐛𝐢𝐫𝐭𝐡 𝐑𝐮𝐧𝐞𝐬[/h1]
 [list]
-[*]Features EID & Encyclopedia support
-[*]Features Magic Chalk, Andromeda, Epiphany, Fiend Folio, Rep+, Retribution Support
+[*]Features EID support
+[*]Features Magic Chalk, Rune Tablet, Andromeda, Epiphany, Fiend Folio, Rep+, Retribution, Rare Chests Support
 [/list]
 [u]___________________________________[/u]
 
@@ -30,7 +30,7 @@ kittenchilly, BrakeDude, Sillst, Michael¿?, and Kotry
 
 [h2] Special thanks to [/h2]
 [code][u]_Kilburn[/u] - For original rune idea</description>
-    <version>3.0</version>
+    <version>3.1</version>
     <visibility>Public</visibility>
     <tag id="Lua"/>
     <tag id="Pickups"/>

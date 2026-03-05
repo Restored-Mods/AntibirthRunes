@@ -2,8 +2,8 @@ In the Antibirth mod, there were 4 runes that were cut from Repentance along wit
 
 # 𝐀𝐧𝐭𝐢𝐛𝐢𝐫𝐭𝐡 𝐑𝐮𝐧𝐞𝐬
 
-- Features EID & Encyclopedia support
-- Features Magic Chalk, Andromeda, Epiphany, Fiend Folio, Rep+, Retribution Support
+- Features EID support
+- Features Magic Chalk, Rune Tablet, Andromeda, Epiphany, Fiend Folio, Rep+, Retribution, Rare Chests Support
 
 ##
 
